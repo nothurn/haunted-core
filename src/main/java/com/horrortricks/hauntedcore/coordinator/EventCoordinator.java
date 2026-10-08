@@ -6,6 +6,7 @@ public final class EventCoordinator {
    private static final long NEVER = -4611686018427387904L;
    private static long tickCounter = 0L;
    private static long lastEventTick = -4611686018427387904L;
+   private static long lastServerEventGameTime = -4611686018427387904L;
 
    private EventCoordinator() {
    }
@@ -19,6 +20,15 @@ public final class EventCoordinator {
       return tickCounter - lastEventTick >= cooldownTicks;
    }
 
+   public static void reportServerEvent(long gameTime) {
+      lastServerEventGameTime = gameTime;
+   }
+
+   public static boolean isServerQuietPeriodOver(long gameTime) {
+      long cooldownTicks = ((Integer)HauntedCoreConfig.GLOBAL_COOLDOWN_SECONDS.get()).intValue() * 20L;
+      return gameTime - lastServerEventGameTime >= cooldownTicks;
+   }
+
    public static void tick() {
       tickCounter++;
    }
@@ -26,5 +36,6 @@ public final class EventCoordinator {
    public static void resetSession() {
       tickCounter = 0L;
       lastEventTick = -4611686018427387904L;
+      lastServerEventGameTime = -4611686018427387904L;
    }
 }

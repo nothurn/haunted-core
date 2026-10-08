@@ -13,6 +13,7 @@ public class HauntedCoreMod {
    private static final Logger LOGGER = LogUtils.getLogger();
 
    public HauntedCoreMod(IEventBus modEventBus, ModContainer modContainer) {
+      modEventBus.addListener(HauntedCoreNetworking::onRegisterPayloadHandlers);
       modContainer.registerConfig(Type.CLIENT, HauntedCoreConfig.SPEC);
       LOGGER.info("Haunted Core initialized.");
    }
